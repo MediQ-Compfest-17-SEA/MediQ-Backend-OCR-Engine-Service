@@ -26,7 +26,12 @@ This project provides an Optical Character Recognition (OCR) solution to extract
    pip install -r requirements.txt
    ```
 
-4. Set the environment variable `GOOGLE_API_KEY` in `ktp_ocr.py` with your Google Cloud API key
+4. Create your .env file based on the provided template:
+  ```bash
+   cp .env.example .env
+   ```
+
+5. Set the environment variable `GOOGLE_API_KEY` in `.env` with your Google Cloud API key
 
 ## Running the Sample Code
 
@@ -60,3 +65,7 @@ python ktp_ocr.py
 ```
 
 Enjoy extracting data from Indonesian ID Cards with ease!
+
+## Credit
+https://github.com/indradevelop/IdCardOCR-KTP-Indonesia
+
