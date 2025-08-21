@@ -1,71 +1,91 @@
-# ID Card OCR for KTP Indonesia using Gemini AI
+# MediQ OCR Engine Service - Gemini Powered
 
-This project provides an Optical Character Recognition (OCR) solution to extract data from Indonesian KTP (ID Card) using Gemini AI.
+Advanced Gemini AI-powered OCR engine untuk ekstraksi data KTP Indonesia dengan akurasi tinggi.
 
-## Setup Instructions
+## Features
 
-1. Create a virtual environment named `.venv`:
-   ```bash
-   python -m venv .venv
-   ```
+- 🤖 **Gemini AI Integration**: Menggunakan Google Gemini 2.0 Flash untuk OCR akurat
+- 📄 **KTP Processing**: Ekstraksi data lengkap dari KTP Indonesia
+- 🚀 **High Performance**: Processing cepat dengan response time < 3 detik
+- 📊 **Swagger Documentation**: API documentation lengkap di `/docs`
+- 💚 **Health Monitoring**: Health check endpoints untuk monitoring
+- 🔄 **Backward Compatibility**: Compatible dengan API lama
 
-2. Activate the virtual environment:
+## API Endpoints
 
-   - On Windows:
-     ```bash
-     .venv\Scripts\activate
-     ```
+### OCR Processing
+- `POST /ocr/scan-ocr` - Process KTP dengan Gemini AI
+- `POST /ocr/process` - Alias untuk backward compatibility  
+- `POST /ocr/validate-result` - Validasi hasil OCR
+- `POST /ocr` - Legacy endpoint
 
-   - On macOS/Linux:
-     ```bash
-     source .venv/bin/activate
-     ```
+### Health & Monitoring
+- `GET /health/` - Service information
+- `GET /health/health` - Health check
+- `GET /healthz` - Legacy health check
+- `GET /` - Root endpoint dengan service info
+- `GET /docs` - Swagger documentation
 
-3. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Setup
 
-4. Create your .env file based on the provided template:
-  ```bash
-   cp .env.example .env
-   ```
-
-5. Set the environment variable `GOOGLE_API_KEY` in `.env` with your Google Cloud API key
-
-## Running the Sample Code
-
-Run the sample code to perform OCR on KTP images:
-
+1. Install dependencies:
 ```bash
-python ktp_ocr.py
+pip install -r requirements.txt
 ```
 
-## Example Result
+2. Configure environment:
+```bash
+cp .env.example .env
+# Edit .env dan set GOOGLE_API_KEY
+```
+
+3. Run service:
+```bash
+python app.py
+```
+
+## Environment Variables
+
+- `GOOGLE_API_KEY` - Google Gemini AI API key (required)
+- `PORT` - Service port (default: 8604)
+- `FLASK_ENV` - Flask environment (production/development)
+
+## Response Format
 
 ```json
 {
-  "provinsi": "JAWA TIMUR",
-  "kota": "KEDIRI",
-  "NIK": "3506042602660001",
-  "nama": "SULISTYONO",
-  "tempat_tgl_lahir": "KEDIRI, 26-02-1966",
-  "jenis_kelamin": "LAKI-LAKI",
-  "gol_darah": "-",
-  "alamat": "JL.RAYA - DSN PURWOKERTO",
-  "rt_rw": "002 / 003",
-  "kel_desa": "PURWOKERTO",
-  "kecamatan": "NGADILUWIH",
-  "agama": "ISLAM",
-  "status_perkawinan": "KAWIN",
-  "pekerjaan": "GURU",
-  "kewarganegaraan": "WNI",
-  "berlaku_hingga": "26-02-2017"
+  "error": false,
+  "message": "Proses OCR Berhasil",
+  "processing_time": "2.145",
+  "result": {
+    "nik": "3506042602660001",
+    "nama": "SULISTYONO", 
+    "tempat_lahir": "KEDIRI",
+    "tgl_lahir": "26-02-1966",
+    "jenis_kelamin": "LAKI-LAKI",
+    "alamat": {
+      "name": "JL.RAYA - DSN PURWOKERTO",
+      "rt_rw": "002 / 003", 
+      "kel_desa": "PURWOKERTO",
+      "kecamatan": "NGADILUWIH"
+    },
+    "agama": "ISLAM",
+    "status_perkawinan": "KAWIN",
+    "pekerjaan": "GURU",
+    "kewarganegaraan": "WNI",
+    "berlaku_hingga": "SEUMUR HIDUP",
+    "tipe_identifikasi": "ktp",
+    "processing_time": "2.145s"
+  }
 }
 ```
 
-Enjoy extracting data from Indonesian ID Cards with ease!
+## Integration
 
-## Credit
-https://github.com/indradevelop/IdCardOCR-KTP-Indonesia
+Service ini terintegrasi dengan:
+- MediQ API Gateway (port 8601)
+- MediQ OCR Service (port 8603) 
+- Nginx reverse proxy
+- Kubernetes deployment
 
+Swagger documentation: http://localhost:8604/docs
